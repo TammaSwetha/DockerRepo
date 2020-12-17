@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Bird encyclopedia</title>
+</head>
+<body>
+    <h1>Bird encyclopedia</h1>
+    <!--
+        Table to display the list of birds
+    -->
+    <table>
+        <tr>
+            <th>Species</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Pigeon</td>
+            <td>Lovely bird Common in all cities</td>
+        </tr>
+    </table>
+    <br/>
+    <!--
+        contains the form, that will be used to hit the `POST /bird` API
+    -->
+    <form action ="/bird" method="POST">
+        Species:<input type="text" name="species"><br/>
+        Description:<input type="text" name="description"><br/>
+        <input type ="submit" value="Submit">
+    </form>
+    <!--
+        run on each page load to fetch the list of birds and add them to our existing table
+    -->
+    <script>
+        birdTable = document.querySelector("table")
+        /*
+         `fetch` API to make a GET call to /bird
+         expect the response to be a JSON list of birds
+        */
+        fetch("/bird")
+            .then(response => response.json())
+            .then(birdList => {
+                //Once we fetch the list, we iterate over it
+                birdList.forEach(bird => {
+                    // Create the table row
+                    row = document.createElement("tr")
+                        // Create the table data elements for the species and description columns
+                        species = document.createElement("td")
+                        species.innerHTML = bird.species
+                        description = document.createElement("td")
+                        description.innerHTML = bird.description
+
+                        // Add data element to the row
+                        row.appendChild(species)
+                        row.appendChild(description)
+                        // Add row elements to the table itself
+                        birdTable.appendChild(row) 
+            });})
+    </script>
+</body>
+</html>
